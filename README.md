@@ -17,3 +17,6 @@ This Python script automatically generates and synchronizes subtitles in Macedon
    ```bash
    git clone https://github.com/your-username/your-repo-name.git
    cd your-repo-name
+
+pip install -r requirements.txt
+Note: Ensure you have FFmpeg installed on your system, as Whisper requires it for audio processing.
