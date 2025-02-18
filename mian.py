@@ -34,14 +34,43 @@ print("Starting...")
 
 # Function to format time in hh:mm:ss,SSS format
 def format_time(seconds):
+    # Convert seconds to a formatted time string (hh:mm:ss,SSS).
+    #
+    # Args:
+    #     seconds (float): Time in seconds.
+    # Returns:
+    #     str: Formatted time string.
+
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
     milliseconds = int((seconds % 1) * 1000)
     return f"{int(hours):02}:{int(minutes):02}:{int(seconds):02},{milliseconds:03}"
 
+# Generates SRT file from the audio
 def transcribe_audio(audio_file, language=language):
-    model = whisper.load_model("small")
-    result = model.transcribe(audio_file, language=language, verbose=True)
+    # Generates SRT file from the transcribed text
+    #
+    # Args:
+    #   input file (audio: mp3, wav, flac, ogg, aac, m4a; video: mp4, avi, mkv, mov, flv)
+    #   language (mk po default poso za makedonski e napraena alatkava)
+    #               (to change language you should change the language variable and change the word list [mk_full.txt] to the appropriate language)
+    #
+    # Returns:
+    #   str: SRT formatted string
+
+    # Load whisper
+    try:
+        model = whisper.load_model("small")
+    except Exception as e:
+        print(f"Error loading Whisper model: {e}")
+        sys.exit(1)
+
+    # Transcribe audio
+    try:
+        result = model.transcribe(audio_file, language=language, verbose=True)
+    except Exception as e:
+        print(f"Error transcribing audio: {e}")
+        sys.exit(1)
     
     # Create a progress bar for transcription
     total_steps = len(result['segments'])
@@ -50,6 +79,15 @@ def transcribe_audio(audio_file, language=language):
     captions = ""
     index = 1  # Subtitle index starts from 1
     
+    # SRT formatting:
+    # (index)
+    # (start time) --> (end time)
+    # (text content)
+    #
+    # e.g.
+    # 1
+    # 00:00:01:000 --> 00:00:02:300
+    # Zdravo
     for segment in progress_bar:
         start_time = segment['start']
         end_time = segment['end']
@@ -77,7 +115,12 @@ def transcribe_audio(audio_file, language=language):
 
 captions = transcribe_audio(file_path, language=language)
 
-with open(out_path, 'w', encoding='utf-8-sig') as f:  # Use 'utf-8-sig' for proper encoding
-    f.write(captions)
+# Write output
+try:
+    with open(out_path, 'w', encoding='utf-8-sig') as f:  # Use 'utf-8-sig' for proper encoding
+        f.write(captions)
+except Exception as e:
+    print(f"Error writing output file: {e}")
+    sys.exit(1)
 
 print("Transcription complete!")

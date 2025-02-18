@@ -1,0 +1,14 @@
+# requirements.txt
+
+# Core dependencies
+whisper-openai>=1.0.0  # OpenAI's Whisper model for transcription
+tqdm>=4.64.0           # Progress bar for transcription
+autocorrect>=2.6.1     # Text correction for subtitles
+
+# GUI dependencies
+tkinter>=8.6           # Built-in Python library for the graphical interface
+
+# Additional utilities
+numpy>=1.21.0          # Required by Whisper
+torch>=1.10.0          # Required by Whisper
+ffmpeg-python>=0.2.0   # Required by Whisper
