@@ -53,8 +53,8 @@ You can compile this app into an executable for Windows for those who aren't com
    ```
 
 2. Compile the code:
-3. ```bash
+   ```bash
    pyinstaller --noconsole --onefile --name SubtitleGenerator gui.py
    ```
 
-4. The compiled .exe will be in the dist/ folder
+3. The compiled .exe will be in the dist/ folder
