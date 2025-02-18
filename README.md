@@ -20,3 +20,29 @@ This Python script automatically generates and synchronizes subtitles in Macedon
 
 pip install -r requirements.txt
 Note: Ensure you have FFmpeg installed on your system, as Whisper requires it for audio processing.
+
+2. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+
+## Running the App
+### GUI
+To launch the GUI, run:
+   ```bash
+   python gui.py
+
+### Command line use
+   ```bash
+python subtitle_generator.py --input video.mp4 --output subtitles.srt
+
+## Compiling into an EXE (Windows)
+You can compile this app into an executable for Windows for those who aren't comfortable using the command line:
+
+1. Instrall pyinstaller:
+   ```bash
+   pip install pyinstaller
+
+2. Compile the code:
+   pyinstaller --noconsole --onefile --name SubtitleGenerator gui.py
+
+3. The compiled exe will be in the dist/ folder
