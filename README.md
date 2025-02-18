@@ -23,9 +23,6 @@ Uses OpenAI Whisper for audio transcription
    cd your-repo-name
    ```
 
-pip install -r requirements.txt
-Note: Ensure you have FFmpeg installed on your system, as Whisper requires it for audio processing.
-
 2. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
@@ -40,8 +37,12 @@ To launch the GUI, run:
 
 ### Command line use
    ```bash
-   python subtitle_generator.py --input video.mp4 --output subtitles.srt
+   python subtitle_generator.py --input video.mp4 --output C:\Users\User\Desktop --words_per_line 5 --autocorrect
    ```
+- --input takes a file path to the video or audio file to transcribe (supported formats: .mp3, .wav, .m4a, .flac, .ogg, .mp4)
+- --output is the path where the .srt file will be written
+- --words_per_line is the max number of words which will appear on screen at the same time (optional, default: 5)
+- --autocorrect determines if autocorrection will be used for words that may be wrong (optional but recomended)
 
 ## Compiling into an EXE (Windows)
 You can compile this app into an executable for Windows for those who aren't comfortable using the command line:
