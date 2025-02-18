@@ -1,29 +1,33 @@
 import whisper # type: ignore
 from tqdm import tqdm # type: ignore
 import warnings
-import os
 import sys
+import os
+import argparse
 
 from autocorrect import *
 
-if len(sys.argv) != 5:
-    print(len(sys.argv))
-    print("Usage: python external_script.py <boolean> <file_path> <int_value> <str_value>")
-    sys.exit(1)
+# Argument Parsing
+parser = argparse.ArgumentParser(description="Generate Macedonian subtitles from an audio/video file.")
 
-# Get the arguments
-use_autocorrect = sys.argv[1].lower() == 'true'  # Convert the argument to boolean
-file_path = sys.argv[2]
-max_words_per_segment = int(sys.argv[3])
-out_location = sys.argv[4]
+parser.add_argument("--input", required=True, help="Path to the input audio/video file.")
+parser.add_argument("--output", required=True, help="Path to save the generated subtitles.")
+parser.add_argument("--words_per_line", type=int, default=5, help="Maximum words on screen at a time (default: 5)")
+parser.add_argument("--autocorrect", action="store_true", help="Enable automatic text correction.")
+
+args = parser.parse_args()
+
+# Extracting arguments
+file_path = args.input
+out_path = os.path.join(args.output, "captions.srt")
+max_words_per_segment = args.words_per_line
+use_autocorrect = args.autocorrect
 
 print(f"Use Autocorrect: {use_autocorrect}")
 print(f"Input File: {file_path}")
 print(f"Word Limit: {max_words_per_segment}")
-print(f"Output Location: {out_location}")
+print(f"Output File: {out_path}")
 
-out_path = out_location + "\captions.srt"
-print(out_path)
 
 warnings.filterwarnings("ignore", category=FutureWarning)  # Ignore FutureWarnings
 warnings.filterwarnings("ignore", category=UserWarning)    # Ignore UserWarnings

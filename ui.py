@@ -10,20 +10,33 @@ import os
 
 def submit():
     # Get values from inputs
-    use_ac = ac_toggle.get()
-    file_path = file_var.get()
-    max_words = int(int_input_var.get())
-    output_location = output_var.get()
+    file_path = file_var.get().strip()
+    output_location = output_var.get().strip()
+    
+    try:
+        max_words = int(int_input_var.get())
+    except ValueError:
+        messagebox.showerror("Error", "Max words must be an integer.")
+        return
+    
+    use_ac = ac_toggle.get()  # Boolean value
 
-    # Prepare the command to run the external Python script with the values as arguments
+    if not file_path or not output_location:
+        messagebox.showerror("Error", "Please select both input file and output directory.")
+        return
+
+    # Prepare the command to run the external Python script
     command = [
-        'python', 'mian.py',  # This is the Python script to run
-        str(use_ac),  # Convert the boolean to string
-        str(file_path),  # File path selected
-        str(max_words),  # Integer input as string
-        str(output_location)  # String input
+        'python', 'mian.py', 
+        '--input', file_path,
+        '--output', output_location,
+        '--words_per_line', str(max_words)
     ]
     
+    # Add autocorrect flag only if enabled
+    if use_ac:
+        command.append('--autocorrect')
+
     try:
         # Run the external script
         subprocess.run(command, check=True)
@@ -50,7 +63,7 @@ root.title("Auto Caption")
 
 # File directory selector
 file_var = tk.StringVar()
-file_button = tk.Button(root, text="Select Audio to Transcribe: ", command=browse_file)
+file_button = tk.Button(root, text="Select Audio or Video to Transcribe: ", command=browse_file)
 file_button.grid(row=1, column=0, pady=10)
 file_label = tk.Label(root, text="Selected File: ")
 file_label.grid(row=2, column=0)
